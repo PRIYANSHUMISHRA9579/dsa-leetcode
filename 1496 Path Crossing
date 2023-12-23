@@ -1,0 +1,53 @@
+https://leetcode.com/problems/path-crossing/
+
+class Solution {
+public:
+    bool isPathCrossing(string path) {
+        pair<int,int>p(0,0);  //pair to store current position
+        pair<int,int>prev(0,0);pair to store prev position
+        bool flag=false;
+        
+       // unordered_map<pair<int,int>,int>mp;
+        vector<pair<int,int>>v;//vector to store all positions visited
+        v.push_back(p);
+        
+        
+        
+        
+     
+        for(int i=0;i<path.size();i++)
+        {
+            if(path[i]=='N'){
+                p.second=prev.second+1;
+                prev=p;
+                
+            }
+            
+            else if(path[i]=='S'){
+                p.second=prev.second-1;
+                prev=p;
+                }
+            else if(path[i]=='E')
+            {
+                p.first=prev.first+1;
+                prev=p;
+            }
+            else{
+                p.first=prev.first-1;
+                prev=p;
+            }
+            auto it=find(v.begin(),v.end(),p);//check if current position is present in vector 
+            if yes that means this posn is already visited else push the positon in vector
+            if(it!=v.end())
+            {
+                flag=true;
+                break;
+            }
+            else{
+                v.push_back(p);
+            }
+            
+        }
+        return flag;
+    }
+};
