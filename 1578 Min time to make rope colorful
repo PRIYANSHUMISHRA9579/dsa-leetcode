@@ -1,0 +1,57 @@
+https://leetcode.com/problems/minimum-time-to-make-rope-colorful/
+
+
+My Solution:
+class Solution {
+public:                                                       TC-O(N)  SC-O(N)
+    int minCost(string colors, vector<int>& neededTime) {
+        vector<pair<char,int>>v;
+        for(int i=0;i<colors.size();i++)
+        {
+            v.push_back({colors[i],neededTime[i]});
+        }
+        pair<char,int>prev;int ans=0;
+        prev=v[0];
+        for(int i=1;i<v.size();i++)
+        {
+            if(v[i].first==prev.first)
+            {
+                ans+=min(v[i].second,prev.second);
+                //prev=
+                
+                if(v[i].second<prev.second)//if current element is deleted then don't update prev
+                    prev=prev;
+                else
+                    prev=v[i];
+               
+            }
+            else{
+            
+            prev=v[i];
+        }}
+        return ans;
+    }
+};
+
+
+MORE OPTIMISED SOLUTION:  
+TC-O(N)  SC-O(1)
+
+
+int minCost(string s, vector<int>& cost) 
+    {
+        int res = 0;
+        int n = s.size();
+        for(int i = 1; i < n; i++)
+        {
+            if(s[i] == s[i - 1])
+            {
+                res += min(cost[i], cost[i - 1]); 
+                cost[i] = max(cost[i], cost[i - 1]); //Element with minimum value is deleted which means element having maximum value is kept.
+                Thus, adding max value to the cost.
+            }     
+        }
+        
+        return res;
+        
+    }
