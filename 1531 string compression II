@@ -1,0 +1,94 @@
+https://leetcode.com/problems/string-compression-ii/
+
+https://youtu.be/6rgO0obJG0k?si=7q0QcDxGblidf0Td
+
+
+Recursive:
+
+class Solution {
+public:
+    int n;
+    int solve(int i,int k,string &s)
+    {
+        if(k<0)
+            return 100000;
+        if(i>=n || (n-i)<=k)   //index>size || more no of characters can be deleted
+            return 0;
+        int delete_i=solve(i+1,k-1,s);//check next char and decrement delete counter by 1
+        int keep_i=INT_MAX;
+        
+        int deleted=0;
+        int freq=0;
+        int addition=0;
+        
+        for(int j=i;j<n&&deleted<=k;j++)
+        {
+            if(s[j]==s[i])
+            {
+                freq++;
+                if(freq==2 || freq==10 ||freq==100) // if freq =10 no. of digits will increase ( e.g. c2 or c10) 
+                    addition++;
+            }
+            else{
+                deleted++;
+            }
+            keep_i=min(keep_i,1+addition+solve(j+1,k-deleted,s));
+        }
+        return min(delete_i,keep_i);
+    
+        
+    }
+    int getLengthOfOptimalCompression(string s, int k) {
+        n=s.length();
+        
+        return solve(0,k,s);
+        
+    }
+};
+
+
+Memoised :
+
+class Solution {
+public:
+    int n;vector<vector<int>>dp;
+    int solve(int i,int k,string &s)
+    {
+        if(k<0)
+            return 100000;
+        if(i>=n || (n-i)<=k)
+            return 0;
+        if(dp[i][k]!=-1)
+            return dp[i][k];
+        int delete_i=solve(i+1,k-1,s);
+        int keep_i=INT_MAX;
+        
+        int deleted=0;
+        int freq=0;
+        int addition=0;
+        
+        for(int j=i;j<n&&deleted<=k;j++)
+        {
+            if(s[j]==s[i])
+            {
+                freq++;
+                if(freq==2 || freq==10 ||freq==100)
+                    addition++;
+            }
+            else{
+                deleted++;
+            }
+            keep_i=min(keep_i,1+addition+solve(j+1,k-deleted,s));
+        }
+        return dp[i][k]=min(delete_i,keep_i);
+    
+        
+    }
+    int getLengthOfOptimalCompression(string s, int k) {
+        n=s.length();
+        dp=vector<vector<int>>(n+1,vector<int>(k+1,-1));
+        
+        return solve(0,k,s);
+        
+    }
+};
