@@ -45,12 +45,24 @@ public:
     int minDifficulty(vector<int>& jobDifficulty, int d) {
         int n=jobDifficulty.size();
         if(n<d)return  -1;
-        dp=vector<vector<int>>(d+1,vector<int>(n+1,-1));
+        
         return solve(jobDifficulty,n,0,d);
         
         
     }
 };
+
+
+Time Complexity:
+
+The function solve is a recursive function that explores all possible combinations of jobs and days. 
+In the worst case, it tries all combinations, leading to an exponential time complexity.
+The time complexity is O(n^(d+1)), where 'n' is the number of jobs and 'd' is the number of days.
+Space Complexity:
+
+The space complexity is determined by the recursive call stack. In the worst case, the maximum depth of the recursion is 'd'.
+Additionally, the function uses a constant amount of space for variables like maxD and ans at each level of recursion.
+The space complexity is O(d).
 
 
 
@@ -105,3 +117,13 @@ public:
         
     }
 };
+
+Time Complexity:
+
+The memoization array dp of size (d+1) x (n+1) is used to store and retrieve intermediate results, avoiding redundant calculations.
+The time complexity is improved to O(d * n^2) because each subproblem (combination of idx and d) is solved once and its result is stored for future reference.
+Space Complexity:
+
+The space complexity is determined by the memoization array dp and the recursive call stack.
+The memoization array is of size (d+1) x (n+1), and the recursive call stack has a maximum depth of 'd'.
+The space complexity is O(d * n + d) = O(d * n).
