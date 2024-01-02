@@ -37,3 +37,28 @@ public:
         
     }
 };
+
+
+
+MORE EFFICIENT SOLUTIN :   TC;O(N)  SC:O(N)             https://youtu.be/BR--_W8odmw?si=v-m1E5V5pXV0xiDS
+
+class Solution {
+public:
+    vector<vector<int>> findMatrix(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>>ans;
+        unordered_map<int,int>mp;//to store frequency
+        for(int i=0;i<n;i++)
+        {
+            int freq=mp[nums[i]];
+            if(freq==ans.size())
+            {
+                ans.push_back({});//add one more row
+            }
+            ans[freq].push_back(nums[i]);
+            mp[nums[i]]++;
+        }
+        return ans;
+        
+    }
+};
