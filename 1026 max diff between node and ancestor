@@ -1,0 +1,89 @@
+https://leetcode.com/problems/maximum-difference-between-node-and-ancestor/
+
+Brute Force:  find diff between every node pair
+class Solution {
+public:
+    int ans;
+    void maxDiffans(TreeNode* root,TreeNode* child)
+    {
+        if(root==NULL ||child==NULL)
+            return;
+        ans=max(ans,abs(root->val-child->val));
+        maxDiffans(root,child->left);
+        maxDiffans(root,child->right);
+        
+    }
+    void maxDiff(TreeNode* root)
+    {
+        if(root==NULL)
+            return;
+        maxDiffans(root,root->left);
+        maxDiffans(root,root->right);
+        maxDiff(root->left);
+        maxDiff(root->right);
+    }
+    
+    int maxAncestorDiff(TreeNode* root) {
+        ans=-1;
+        maxDiff(root);
+        return ans;
+        
+    }
+};
+The time complexity of the provided code is O(N^2), where N is the number of nodes in the binary tree. The reason for this is the recursive traversal of the tree in
+the `maxDiffans` and `maxDiff` functions.
+
+Let's analyze the time complexity:
+
+1. The `maxDiffans` function is called for each pair of nodes in the tree, and it has a constant amount of work for each call.
+Therefore, the time complexity of `maxDiffans` is O(N), where N is the number of nodes in the tree.
+
+2. The `maxDiff` function calls `maxDiffans` for each node in the tree, and it also recursively calls itself for the left and right children of each node. 
+In the worst case, each node is visited multiple times, leading to an overall time complexity of O(N^2).
+
+The space complexity is O(H), where H is the height of the tree. This is because the space used by the call stack during recursive calls is proportional
+to the height of the tree. In the worst case, for an unbalanced tree, the height can be equal to the number of nodes, leading to a space complexity of O(N). 
+In a balanced tree, the space complexity would be O(log N).
+
+In summary:
+- Time complexity: O(N^2)
+- Space complexity: O(H) where H is the height of the tree, with a worst-case scenario of O(N) for an unbalanced tree.
+
+
+Optimised solution:  find max val in a path and the min in that path ,take its diff
+
+class Solution {
+public:
+    int maxDiffans(TreeNode* root,int maxV,int minV)
+    {
+        if(root==NULL)
+            return abs(maxV-minV);
+    
+        maxV=max(root->val,maxV);//find max and min for each node
+    
+        minV=min(root->val,minV);
+        
+        int l=maxDiffans(root->left,maxV,minV);//left subtree
+        int r=maxDiffans(root->right,maxV,minV);//left subtree
+        
+        return max(l,r);
+        
+        
+    }
+    int maxAncestorDiff(TreeNode* root) {
+        return maxDiffans(root,root->val,root->val);
+        
+    }
+};
+
+The time complexity of the provided code is O(N), where N is the number of nodes in the binary tree. This is because each node is visited exactly once during the traversal, and the operations within the function are constant time.
+
+Let's analyze the time complexity:
+
+1. The `maxDiffans` function is a recursive function that traverses the entire tree once. For each node, it performs constant time operations, and the recursion explores all nodes exactly once. Therefore, the time complexity is O(N), where N is the number of nodes in the tree.
+
+The space complexity is O(H), where H is the height of the tree. This is because the space used by the call stack during recursive calls is proportional to the height of the tree. In the worst case, for an unbalanced tree, the height can be equal to the number of nodes, leading to a space complexity of O(N). In a balanced tree, the space complexity would be O(log N).
+
+In summary:
+- Time complexity: O(N)
+- Space complexity: O(H), with a worst-case scenario of O(N) for an unbalanced tree.
