@@ -1,0 +1,85 @@
+https://leetcode.com/problems/minimum-falling-path-sum/
+
+https://youtu.be/EQC0ckOyEGs?si=YNm2F5ma-8ZirB8w
+
+RECURSION AND MEMOISATION:
+class Solution {
+public:
+    int n;
+    vector<vector<int>>dp;
+    int solve(int i,int j,vector<vector<int>>& matrix)
+    {
+        if(i==n-1)
+            return dp[i][j]=matrix[i][j];
+        if(dp[i][j]!=INT_MAX)
+            return dp[i][j];
+        int ans=matrix[i][j];
+        int minSum=INT_MAX;
+        //int ans1=ans,ans2=ans,ans3=ans;
+        if(i+1<n)
+        {
+            minSum=min(minSum,ans+solve(i+1,j,matrix));
+        }
+        if(i+1<n && j-1>=0)
+            minSum=min(minSum,ans+solve(i+1,j-1,matrix));
+        if(i+1<n && j+1<n)
+            minSum=min(minSum,ans+solve(i+1,j+1,matrix));
+        
+        return dp[i][j]=minSum;
+    
+        
+        
+    }
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        n=matrix.size();
+        dp=vector<vector<int>>(101,vector<int>(101,INT_MAX));//initialise with INT_MAX because sum could be -1 too
+        int mn=INT_MAX;
+        for(int i=0;i<matrix.size();i++)
+        {
+            mn=min(mn,solve(0,i,matrix));
+        }
+        return mn;
+        
+    }
+};
+
+
+ANOTHER SOLUTION:
+select min from upar se and add it to each cell then find min from last row
+
+class Solution {
+public:
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        vector<vector<int>>ans(n,vector<int>(n,0));
+        
+        for(int col=0;col<n;col++)
+        {
+            ans[0][col]=matrix[0][col];
+        }
+        
+        for(int row=1;row<n;row++)
+        {
+            for(int col=0;col<n;col++)
+            {
+               
+                    int a=INT_MAX;
+                int b=INT_MAX;
+                if(col-1>=0)
+                a=ans[row-1][col-1];
+                if(col+1<n)
+                    b=ans[row-1][col+1];
+                ans[row][col]=matrix[row][col]+min(ans[row-1][col],min(a,b));
+                }
+            }
+        
+        int res=INT_MAX;
+        for(int col=0;col<n;col++)
+        {
+            res=min(res,ans[n-1][col]);
+        }
+        return res;
+        }
+        
+    
+};
