@@ -1,0 +1,90 @@
+https://leetcode.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/
+
+
+
+Recursive :
+class Solution {
+public:
+    bool checkUnique(string wrd1,string wrd2)
+    {
+        string wrd=wrd1+wrd2;
+        set<char>s;
+        for(auto it:wrd)
+        {
+            if(s.find(it)!=s.end())
+            {
+                return false;
+            }
+            s.insert(it);
+        }
+        return true;
+      
+    }
+    int solve(string temp,vector<string>& arr,int i)
+    {
+        int include=0,exclude=0;
+        if(i==arr.size())
+            return temp.size();
+        if(!checkUnique(temp,arr[i]))
+            exclude=solve(temp,arr,i+1);
+        else{
+        include=solve(temp+arr[i],arr,i+1);
+        exclude=solve(temp,arr,i+1);
+        }
+        return max(include,exclude);
+            
+    }
+    
+    int maxLength(vector<string>& arr) {
+        string temp="";
+        return solve(temp,arr,0);
+        
+        
+    }
+};
+
+
+
+MEIMOISED:
+class Solution {
+public:
+    unordered_map<string,int>mp;//temp aur i change ho rha
+    bool checkUnique(string wrd1,string wrd2)
+    {
+        string wrd=wrd1+wrd2;
+        set<char>s;
+        for(auto it:wrd)
+        {
+            if(s.find(it)!=s.end())
+            {
+                return false;
+            }
+            s.insert(it);
+        }
+        return true;
+      
+    }
+    int solve(string temp,vector<string>& arr,int i)
+    {
+        int include=0,exclude=0;
+        if(i==arr.size())
+            return temp.size();
+        if(mp.find(temp)!=mp.end())
+            return mp[temp];
+        if(!checkUnique(temp,arr[i]))
+            exclude=solve(temp,arr,i+1);
+        else{
+        include=solve(temp+arr[i],arr,i+1);
+        exclude=solve(temp,arr,i+1);
+        }
+        return mp[temp]=max(include,exclude);
+            
+    }
+    
+    int maxLength(vector<string>& arr) {
+        string temp="";
+        return solve(temp,arr,0);
+        
+        
+    }
+};
