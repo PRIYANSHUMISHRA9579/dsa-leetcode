@@ -1,0 +1,113 @@
+https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/
+
+https://youtu.be/FK-Fztwj2gM?si=y9M0p4LmK_gkDVXq
+
+class Solution {
+public:
+    int ans;//to make pallindrome in a given path there should be only 1 no with odd count
+    void solve(TreeNode* root,vector<int>&freq)
+    {
+        if(!root)
+            return;
+        freq[root->val]++;
+         if(!root->left && !root->right)
+         {
+             int countOdd=0;
+             for(int i=0;i<10;i++)
+             {
+                 if(freq[i]%2!=0)
+                     countOdd++;
+                 
+             }
+             if(countOdd<=1)
+                 ans++;
+         }
+        solve(root->left,freq);
+        solve(root->right,freq);
+        //backtrack
+        freq[root->val]--;
+        
+    }
+    int pseudoPalindromicPaths (TreeNode* root) {
+        ans=0;
+        vector<int>freq(10,0);///frequency vector
+        solve(root,freq);
+        return ans;
+        
+    }
+};
+
+Time complexity: O(N)
+Space complexity: O(H), where H is the height of the binary tree.
+
+Explanation:
+- The function `solve` is a recursive function that traverses the binary tree. In the worst case, it visits each node once.
+- For each node, the function updates the frequency vector, and then checks if the current path forms a pseudo-palindromic path or not. This operation takes constant time.
+- The frequency vector has a fixed size of 10, representing digits from 0 to 9. So, the space complexity for the frequency vector is O(10), which is constant.
+- The recursion depth is determined by the height of the binary tree. In the worst case, where the tree is skewed, the height is equal to 
+the number of nodes, and the space complexity becomes O(N).
+- Therefore, the overall time complexity is O(N), and the space complexity is O(H) or O(N), depending on the height of the tree.
+
+
+
+The time complexity of the `pseudoPalindromicPaths` function is O(N), where N is the number of nodes in the binary tree. Here's the breakdown:
+
+1. The `solve` function is a recursive function that visits each node exactly once. In the worst case, it will visit all the nodes of the tree, 
+making the time complexity O(N).
+
+2. Inside the `solve` function, there is a loop that iterates over a constant number of elements (digits 0 to 9) in the frequency vector.
+The loop does not depend on the input size and can be considered constant time.
+
+3. The frequency vector has a constant size of 10, and updating it for each node also takes constant time.
+
+Therefore, the dominant factor in the time complexity is the traversal of the binary tree, which is O(N). 
+
+
+
+
+
+
+
+
+Approach 2: BITMANIPULATION:
+
+class Solution {
+public:
+    int ans;//to make pallindrome in a given path there should be only 1 no with odd count
+    void solve(TreeNode* root,int value)
+    {
+        if(!root)
+            return;
+       // freq[root->val]++;
+        value=value^(1<<root->val);//setting bit 1
+         if(!root->left && !root->right)
+         {
+//              int countOdd=0;
+//              for(int i=0;i<10;i++)
+//              {
+//                  if(freq[i]%2!=0)
+//                      countOdd++;
+                 
+//              }
+//              if(countOdd<=1)
+//                  ans++;
+             
+             if((value &(value-1))==0)//to check if there is only 1 set bit
+             {
+                 ans++;
+             }
+         }
+        solve(root->left,value);
+        solve(root->right,value);
+        //no backtrack since value passed by value
+       // freq[root->val]--;
+        
+    }
+    int pseudoPalindromicPaths (TreeNode* root) {
+        ans=0;
+       // vector<int>freq(10,0);///frequency vector
+        solve(root,0);
+        return ans;
+        
+    }
+};
