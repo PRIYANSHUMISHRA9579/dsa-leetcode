@@ -1,0 +1,91 @@
+https://leetcode.com/problems/group-anagrams/
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        //vector<string>
+        vector<pair<string,string>>p;
+         vector<vector<string>>ans;
+        for(int i=0;i<strs.size();i++)
+        {
+            string str=strs[i];
+            sort(str.begin(),str.end());//sort each string
+            //strs[i]=str;
+            p.push_back({str,strs[i]});
+            
+        }
+        //sort the vector
+        
+        //key is sorted string 
+        unordered_map<string,vector<string>>mp;
+        for(auto it=p.begin();it!=p.end();it++)
+        {
+            mp[it->first].push_back(it->second);
+        }
+        vector<string>v;
+        for(auto it=mp.begin();it!=mp.end();it++)
+        {
+            v=it->second;
+            ans.push_back(v);
+            
+            
+            
+        }
+        
+        
+        
+//         sort(p.begin(),p.end());
+//        
+//         int i=0;
+//         while(i<p.size()-1)
+//         {
+            
+//             v.push_back(p[i].second);
+            
+//             if(p[i].first==p[i+1].first)
+//             {
+//                 while(p[i].first==p[i+1].first){
+//                 v.push_back(p[i+1].second);
+//                 i++;
+                
+//             }}
+//             else{
+//             ans.push_back(v);
+//                 i++;
+            
+//         }}
+        
+        return ans;
+    }
+};
+
+
+The time and space complexity of the provided code can be analyzed as follows:
+
+Time Complexity:
+1. Sorting each string in the input vector `strs` takes O(n * m * log(m)) time, where n is the number of strings and m is the maximum length of a string.
+2. Constructing the pairs and populating the unordered_map takes O(n * m) time, where n is the number of strings and m is the maximum length of a string.
+3. Constructing the output vector `ans` takes O(n) time.
+
+Overall, the dominant factor is the sorting operation, so the time complexity is O(n * m * log(m)), where n is the number of strings and m is the maximum length of a string.
+
+Space Complexity:
+1. The space complexity for the vector `p` of pairs is O(n * m), where n is the number of strings and m is the maximum length of a string.
+2. The space complexity for the unordered_map `mp` is also O(n * m), considering the worst-case scenario where all strings are distinct.
+3. The space complexity for the output vector `ans` is O(n * m), assuming each string is unique.
+4. Additional space is used for temporary variables and iterators.
+
+Overall, the space complexity is O(n * m).
+
+In summary:
+- Time Complexity: O(n * m * log(m))
+- Space Complexity: O(n * m)
+
+These complexities are based on the current implementation of the solution. There might be further optimizations possible to improve these complexities.
+
+
+
+better approach://
+
+https://youtu.be/--k5-3EOObs?si=yJc0lu8A6CNGxwGp
+
