@@ -1,0 +1,58 @@
+https://leetcode.com/problems/palindromic-substrings/
+
+https://youtu.be/tGAMyZxlwuA?si=4Zsai4cUKAojdMyj
+
+APPROACH 1: BRUTE FORCE+MEIMOISATION:
+
+class Solution {
+public:
+    int dp[1001][1001];
+    int check(string s,int i,int j)
+    {
+        if(i>j)
+            return 1;//complete string traversed
+        if(dp[i][j]!=-1)
+            return dp[i][j];
+        if(s[i]==s[j])
+            return dp[i][j]=check(s,i+1,j-1);//check other chars
+        else
+             return dp[i][j]= 0;
+        
+    }
+    int countSubstrings(string s) {
+        int cnt=0;
+        memset(dp,-1,sizeof(dp));
+        
+        for(int i=0;i<s.size();i++)
+        {
+            for(int j=i;j<s.size();j++)
+            {
+             if(check(s,i,j)==1)
+             {
+                 cnt++;
+             }
+            }
+        }
+        return cnt;
+        
+    }
+};
+
+The time and space complexity of this solution can be analyzed as follows:
+
+1. Time Complexity:
+   - The function `check` is called for every possible substring of the input string `s`.
+   - For each substring, the function `check` performs a constant amount of work.
+   - Since there are \( O(n^2) \) substrings for a string of length \( n \), where \( n \) is the size of the input string `s`, the time complexity of the `countSubstrings` function is \( O(n^3) \).
+   
+2. Space Complexity:
+   - The space complexity is primarily determined by the dynamic programming array `dp`, which is of size \( 1001 \times 1001 \), and it remains constant irrespective of the input size.
+   - Therefore, the space complexity is \( O(1) \) or constant space.
+
+In summary:
+- Time Complexity: \( O(n^3) \)
+- Space Complexity: \( O(1) \)
+
+
+
+
