@@ -1,0 +1,51 @@
+https://leetcode.com/problems/cherry-pickup-ii/
+
+
+https://leetcode.com/problems/cherry-pickup-ii/discuss/4708405/Interview-Approach-DFS-Brute-Force-Top-Down-to-Bottom-Up-DP
+
+
+class Solution {
+public:
+    int dp[71][71][71];
+    int n;
+    int m;
+    int solve(vector<vector<int>>& grid,int currRow,int col1,int col2)
+    {
+        if(col1<0||col1>=m||col2<0||col2>=m)
+            return 0;
+        if(currRow==n)
+            return 0;
+        if(dp[currRow][col1][col2]!=-1)
+            return dp[currRow][col1][col2]; 
+        int res=0;
+        res+=grid[currRow][col1];
+        if(col1!=col2)
+        res+=grid[currRow][col2];
+         // grid[currRow][col1]=0;
+         // grid[currRow][col2]=0;
+        
+        int maxi=0;
+        //dfs for next row
+        for(int i=-1;i<=1;i++)
+        {
+           for(int j=-1;j<=1;j++)
+           {
+               int newCol1=col1+i;
+               int newCol2=col2+j;
+               // if(newCol1>=0 && newCol2>=0 && newCol1<m && newCol2<m)
+               //if(i<j)
+                  maxi=max(maxi, solve(grid,currRow+1,newCol1,newCol2));
+               
+           }
+        }
+        res+=maxi;
+        return dp[currRow][col1][col2]=res;
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+         n=grid.size();
+         m=grid[0].size();
+        memset(dp,-1,sizeof(dp));
+        return solve(grid,0,0,m-1);
+        
+    }
+};
