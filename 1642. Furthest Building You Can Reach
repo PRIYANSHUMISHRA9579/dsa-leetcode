@@ -59,3 +59,51 @@ time and space complexity:To analyze the time and space complexity of your solut
 
 Since you're using memoization, your solution is more efficient than a naive recursive approach, but still, it could be further optimized.
 
+
+
+
+
+MOST OPTIMISED SOLUTION:
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        priority_queue<int>pq;//to store bricks used previously if in future we realise we could have used ladder before instead of brick 
+        int diff=0;
+        int n=heights.size();
+        int i;
+        for(i=0;i<n-1;i++)
+        {
+            
+            if(heights[i+1]<=heights[i])
+                continue;
+            else{
+                diff=heights[i+1]-heights[i];
+            if(diff<=bricks)//we have enough bricks right now
+            {
+                bricks-=diff;
+                pq.push(diff);
+            }
+            else if(ladders>0)
+            {
+                if(!pq.empty()&&pq.top()>diff)
+                {
+                    bricks+=pq.top();
+                    pq.pop();
+                    bricks-=diff;
+                    ladders--;
+                    pq.push(diff);
+                }
+                else{//if max brick used before is less than current requiremnt use ladder if present
+                    ladders--;
+                }
+            }
+            else{
+                break;
+            }
+            }
+            
+        }
+        return i;
+        
+    }
+};
