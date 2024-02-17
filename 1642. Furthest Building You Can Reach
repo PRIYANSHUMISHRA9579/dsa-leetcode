@@ -1,2 +1,61 @@
 https://leetcode.com/problems/furthest-building-you-can-reach/
 
+//approach 1: recursion+meimo  gives memory limit exceeded bc bricks contraint very large
+class Solution {
+public:
+    int n;
+    //long long dp[100001][1e9+1][1e5+1];
+    vector<vector<int>>dp;
+    int solve(vector<int>& heights,int b,int l,int i)
+    {
+        if(i==n-1)
+            return 0;
+        //if(l==0 && b==0 && heights[i+1])
+        int ans=0;
+        if(dp[b][l]!=-1)
+            return dp[b][l];
+        if(i+1<n)
+        {
+            int byBrick=0;int byladder=0; 
+        if(heights[i+1]<=heights[i])
+            ans= 1+solve(heights,b,l,i+1);
+        //if(heights[i+1]>heights[i])
+        else
+        {
+           if(heights[i+1]-heights[i]<=b)
+               byBrick=1+solve(heights,b-(heights[i+1]-heights[i]),l,i+1);
+            if(l>0)
+                byladder=1+solve(heights,b,l-1,i+1);
+            ans= max(byBrick,byladder);
+        }
+            
+            }
+        return dp[b][l] =ans;
+    }
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        n=heights.size();
+       // memset(dp,-1,sizeof(dp));
+        dp = vector<vector<int>>(bricks + 1,
+                    vector<int>(ladders + 1, -1));
+        return solve(heights,bricks,ladders,0);
+    }
+};
+
+time and space complexity:To analyze the time and space complexity of your solution:
+
+### Time Complexity:
+- The function `solve` is called recursively for each possible choice at each step.
+- At each step, you either use a brick or a ladder.
+- Since there are only two choices at each step, the time complexity can be expressed as O(2^N), where N is the number of buildings.
+- However, since you're memoizing the results using the `dp` table, the actual time complexity would be much lower due to the reuse of already computed results. The time complexity with memoization is typically much better than without it, and in practice, it's often polynomial.
+- Therefore, considering the memoization, the time complexity is bounded by O(N * bricks * ladders), where N is the number of buildings.
+
+### Space Complexity:
+- The space complexity primarily comes from the memoization table `dp`.
+- The `dp` table has dimensions `(bricks+1) x (ladders+1)`.
+- Therefore, the space complexity is O(bricks * ladders).
+- Additionally, you have other space complexities related to the input `heights` and the recursion stack.
+- Overall, the space complexity is dominated by the memoization table and is O(bricks * ladders) in this case.
+
+Since you're using memoization, your solution is more efficient than a naive recursive approach, but still, it could be further optimized.
+
