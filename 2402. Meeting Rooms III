@@ -1,0 +1,62 @@
+https://leetcode.com/problems/meeting-rooms-iii/
+
+https://youtu.be/8JTr7Hk0p2o?si=UmP7_pwbQPKNPa3l
+
+
+BRUTE FORCE:  TC: O(n*m+nlog(n)) m=no.of meetings;
+SC=O(n)
+class Solution {
+public:
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+       // int n=meetings.size();
+        //sort meetings on basis of start time to meet condn 3
+        sort(meetings.begin(),meetings.end());
+        
+        vector<long long>lastAvailableAt(n,0);//time whwn each room become available
+        //int lastAvailableRoom=0;each room is available initially hence initialise 0
+        vector<int>roomCount(n,0);//no. of times a room is used
+        for(vector<int>&meet:meetings)
+        {
+            int start=meet[0];
+            int end=meet[1];
+            bool found=false;
+            long long earlyEndRoomTime=LLONG_MAX;
+            int earlyEndRoom=0;
+            for(int room=0;room<n;room++)
+            {
+                if(lastAvailableAt[room]<=start)//room is available 
+                {
+                    lastAvailableAt[room]=end;//next time this room will be free at end of curr meeting
+                    roomCount[room]++;
+                    found=true;
+                    break;
+                }
+                if(lastAvailableAt[room]<earlyEndRoomTime)//find which room becomes free first
+                {
+                    earlyEndRoomTime=lastAvailableAt[room];
+                    earlyEndRoom=room;
+                    
+                }
+            }
+            if(!found)
+            {
+                lastAvailableAt[earlyEndRoom]+=end-start;
+                roomCount[earlyEndRoom]++;
+                
+            }
+        }
+        int ans=-1;
+        int mx=0;
+        for(int room=0;room<n;room++)
+        {
+            if(roomCount[room]>mx)
+            {
+                mx=roomCount[room];
+                ans=room;
+            }
+        }
+        return ans;
+        
+        
+    }
+};
