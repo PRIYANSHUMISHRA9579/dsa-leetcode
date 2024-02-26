@@ -1,0 +1,38 @@
+https://leetcode.com/problems/k-inverse-pairs-array/  
+
+https://youtu.be/y9yo1kyW7Bg?si=YFQoOo_sF5x0Rba3
+
+
+
+
+RECURSIVE+MEIMOISATION         THIS GAVE TLE
+class Solution {
+public:
+    int MOD=1e9+7;
+    int dp[1001][1001];
+    int solve(int n ,int k)
+    {
+        if(n==0)
+            return 0;
+        if(k==0)//sorted array
+            return 1;
+        if(dp[n][k]!=-1)
+            return dp[n][k];
+        int result=0;
+        //if i am planning to add nth element in array max inversions this element can create is n-1
+        for(int inv=0;inv<=min(k,n-1);inv++)
+        {
+            result =(result+solve(n-1,k-inv))%MOD;
+        }
+        return dp[n][k]=result;
+        
+    }
+    int kInversePairs(int n, int k) {
+        memset(dp,-1,sizeof(dp));
+      return solve(n,k);
+        
+        
+    }
+};
+
+
