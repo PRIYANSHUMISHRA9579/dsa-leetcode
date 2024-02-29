@@ -1,0 +1,110 @@
+https://leetcode.com/problems/even-odd-tree/
+
+BFS APPROACH:
+
+class Solution {
+public:
+    bool isEvenOddTree(TreeNode* root) {
+        queue<TreeNode*>q;
+        if(!root)
+            return true;
+        q.push(root);
+        int level=0;
+        if(root->val%2==0)
+            return false;
+        while(!q.empty())
+        {
+            int n=q.size();
+            vector<int>v;
+            
+            while(n--)
+            {
+                TreeNode* node=q.front();
+                q.pop();
+                v.push_back(node->val);
+               
+                if(node->left!=NULL)
+                    q.push(node->left);
+                 if(node->right!=NULL)
+                    q.push(node->right);
+                
+                
+                
+            }
+            
+            if(level%2==1)
+            {
+                
+                for(int i=0;i<v.size()-1;i++)
+                {
+                    if(v[i]%2==0 && v[i+1]%2==0)
+                    {
+                        if(v[i+1]<v[i])
+                            continue;
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                if(v.size()==1)
+                 {
+                     if(v[0]%2==1)
+                         return false;
+                         
+                 }
+                    
+            }
+             if(level!=0 && level%2==0)
+             {
+                 for(int i=0;i<v.size()-1;i++)
+                {
+                    if(v[i]%2==1 && v[i+1]%2==1)
+                    {
+                        if(v[i+1]>v[i])
+                            continue;
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                 if(v.size()==1)
+                 {
+                     if(v[0]%2==0)
+                         return false;
+                         
+                 }
+              
+                    
+            }
+            level++;
+            
+            
+        }
+        return true;
+        
+    }
+};
+
+To analyze the time and space complexity of the provided code, let's break it down:
+
+1. **Time Complexity**:
+   - The code performs a level-order traversal of the binary tree using a queue.
+   - Each node is visited exactly once.
+   - Within the traversal loop, there are operations to push nodes into the queue, pop nodes from the queue, and process each node.
+   - Overall, the time complexity is O(N), where N is the number of nodes in the tree.
+
+2. **Space Complexity**:
+   - The space complexity is determined by the queue used for the level-order traversal and the vector used to store values at each level.
+   - At any given time, the queue can hold up to the maximum number of nodes at a single level, which is at most the width of the tree (maximum number of nodes at any level).
+   - In the worst-case scenario, the queue may contain all the nodes of the last level, which can be approximately half of the total nodes in the tree for a perfectly balanced tree.
+   - Additionally, the vector `v` is used to store values at each level, which also contributes to space complexity.
+   - Hence, the overall space complexity is O(W), where W is the maximum width of the tree.
+
+In summary:
+- Time Complexity: O(N)
+- Space Complexity: O(W)
+
+These complexities are based on the assumption that the input tree is a binary tree and not a skewed tree. In the worst-case scenario, for a perfectly balanced binary tree, the space complexity may approach O(N) due to the width of the tree being proportional to the number of nodes.
+
