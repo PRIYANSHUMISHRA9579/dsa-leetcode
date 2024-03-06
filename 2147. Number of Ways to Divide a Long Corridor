@@ -1,0 +1,68 @@
+https://leetcode.com/problems/number-of-ways-to-divide-a-long-corridor/
+
+approach1:
+class Solution {
+public:
+    int numberOfWays(string corridor) {
+        int len = corridor.size(); // Length of the corridor
+        
+        int count = 0; // Variable to count the number of seats
+        for (int i = 0; i < len; i++) {
+            if (corridor[i] == 'S') {
+                count++; // Increment count for each seat 'S' found
+            }
+        }
+        
+        // If there are no seats or an odd number of seats, it's not possible to divide them evenly
+        if (count == 0 || count % 2) {
+            return 0;
+        }
+        
+        long long ans = 1; // Initialize the answer to 1, using long long to handle large values
+        int c = 0; // Counter for consecutive seats encountered
+        int countPlant = 0; // Counter for consecutive plants encountered
+        
+        for (int i = 0; i < len; i++) {
+            if (corridor[i] == 'S') {
+                c++; // Increment counter for consecutive seats
+            }
+            if (c == 2) { // When two consecutive seats are found
+                countPlant = 1; // Initialize the count of plants to 1
+                i++; // Move to the next position
+                while (i < len && corridor[i] == 'P') {
+                    countPlant++; // Count consecutive plants
+                    i++; // Move to the next position
+                }
+                if (i == len) {
+                    break; // If reached the end of the corridor, break the loop
+                }
+                ans = (ans * countPlant) % 1000000007; // Update answer with the count of plants, taking modulo to handle large values//multiplication because of p&c
+                c = 0; // Reset the seat counter
+                i--; // Move back one step to re-evaluate the current position
+            }
+        }
+        return ans; // Return the final answer
+    }
+};
+
+
+Explanation:
+- The function `numberOfWays` takes a string `corridor` representing a corridor with seats ('S') and plants ('P').
+- It counts the number of consecutive seats, and if there are an even number of seats, it calculates the number of ways to place plants between every two consecutive seats.
+- The code uses two pointers to iterate through the corridor and count consecutive seats/plants.
+- The answer is updated by multiplying the count of consecutive plants encountered between two seats.
+- The final answer is returned.
+
+Time Complexity: O(n)
+- The code iterates through the corridor string once to count the seats and then again to calculate the number of ways, where n is the length of the corridor string.
+
+Space Complexity: O(1)
+- The space used is constant, regardless of the input size.
+
+
+Approach 2:
+
+
+
+
+
